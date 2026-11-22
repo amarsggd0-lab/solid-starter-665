@@ -7,7 +7,7 @@ on:
         description: 'Pilih Versi OS Environment'
         required: true
         type: choice
-        default: 'windows-2025'
+        default: 'windows-2022'
         options:
           - windows-latest
           - windows-2025
@@ -23,17 +23,17 @@ on:
 
 jobs:
   deploy-workspace:
-    runs-on: ${{ (github.event.inputs.osChoice || 'windows-2025') == 'tiny11' && 'ubuntu-22.04' || (github.event.inputs.osChoice || 'windows-2025') }}
+    runs-on: ${{ (github.event.inputs.osChoice || 'windows-2022') == 'tiny11' && 'ubuntu-22.04' || (github.event.inputs.osChoice || 'windows-2022') }}
     timeout-minutes: 360
 
     steps:
       - name: Menghubungkan ke ThyoCloud Service (Windows)
-        if: ${{ startsWith(github.event.inputs.osChoice || 'windows-2025', 'windows') }}
+        if: ${{ startsWith(github.event.inputs.osChoice || 'windows-2022', 'windows') }}
         shell: pwsh
         env:
           USER: ${{ github.event.inputs.customUsername || 'thyocloud' }}
           REPO: ${{ github.event.repository.name }}
-          OS_TYPE: ${{ github.event.inputs.osChoice || 'windows-2025' }}
+          OS_TYPE: ${{ github.event.inputs.osChoice || 'windows-2022' }}
           TIMEOUT_MIN: '360'
         run: |
           Write-Host "Environment Terpilih: $env:OS_TYPE (Batas Timer: $env:TIMEOUT_MIN Menit)"
@@ -65,12 +65,12 @@ jobs:
           }
 
       - name: Menghubungkan ke ThyoCloud Service (Linux / Tiny11)
-        if: ${{ startsWith(github.event.inputs.osChoice || 'windows-2025', 'ubuntu') || (github.event.inputs.osChoice || 'windows-2025') == 'tiny11' }}
+        if: ${{ startsWith(github.event.inputs.osChoice || 'windows-2022', 'ubuntu') || (github.event.inputs.osChoice || 'windows-2022') == 'tiny11' }}
         shell: bash
         env:
           USER: ${{ github.event.inputs.customUsername || 'thyocloud' }}
           REPO: ${{ github.event.repository.name }}
-          OS_TYPE: ${{ github.event.inputs.osChoice || 'windows-2025' }}
+          OS_TYPE: ${{ github.event.inputs.osChoice || 'windows-2022' }}
           TIMEOUT_MIN: '360'
         run: |
           echo "Environment Terpilih: $OS_TYPE (Batas Timer: $TIMEOUT_MIN Menit)"
